@@ -8,7 +8,12 @@ import {
   compose,
   reduce,
   values,
-  and
+  and,
+  toUpper,
+  join,
+  concat,
+  __,
+  toString
 } from 'ramda';
 
 
@@ -49,5 +54,41 @@ const userValidateWalker = Walker.of(
   },
   logicalAndValues
 );
-
 console.log(userValidateWalker.walk(johnDoe));
+
+// Arrays
+const colorsWalker = Walker.of({
+  names: Walker.of([
+    Walker.of(Schema.ATOM, toUpper)
+  ]),
+  data: Walker.of([
+    Walker.of({
+      hex: Walker.of(Schema.ATOM, concat('#')),
+      rgb: Walker.of([
+        Walker.of(
+          Schema.ATOM,
+          compose(concat(__, ' / 255'), toString)
+        )
+      ], join('; ')),
+    })
+  ])
+})
+
+const colorData = {
+  names: ['red', 'green', 'blue'],
+  data: [
+    {
+      hex: 'e02228',
+      rgb: [224, 34, 40]
+    },
+    {
+      hex: '52f170',
+      rgb: [82, 241, 112]
+    },
+    {
+      hex: '312dc9',
+      rgb: [49, 45, 201]
+    },
+  ]
+};
+console.log(colorsWalker.walk(colorData));

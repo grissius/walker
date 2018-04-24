@@ -7,7 +7,8 @@ import {
   reverse,
   multiply,
   tap,
-  __
+  __,
+  head
 } from 'ramda';
 
 const Schema = {
@@ -25,8 +26,11 @@ class Walker {
     if (this.schema === Schema.ATOM) {
       return this.fn(obj);
     }
-
-    // is composite
+    if (obj instanceof Array) {
+      const arrWalker = head(this.schema).walk;
+      return compose(this.fn, map(arrWalker.bind(this)))(obj);
+    }
+    // is object
     const childWalk = ([key, subObj]) => {
       return [key, this.schema[key].walk(subObj)];
     };
