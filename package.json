@@ -4,11 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "babel-node": "babel-node",
+    "start": "nodemon --exec npm run babel-node -- ./index.js",
+    "build": "babel src -d dist"
   },
   "author": "Jaroslav Šmolík <grissius@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "ramda": "^0.25.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "nodemon": "^1.17.3"
   }
 }
