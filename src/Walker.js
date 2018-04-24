@@ -1,4 +1,4 @@
-const {
+import {
   toPairs,
   compose,
   fromPairs,
@@ -8,7 +8,7 @@ const {
   multiply,
   tap,
   __
-} = require('ramda');
+} from 'ramda';
 
 const Schema = {
   ATOM: "ATOM"
@@ -18,7 +18,8 @@ class Walker {
   constructor(schema, fn) {
     this.schema = schema;
     this.fn = fn;
-  }
+  };
+  static of = (schema, fn = identity) => new Walker(schema, fn);
   walk = obj => {
     // is atom
     if (this.schema === Schema.ATOM) {
@@ -27,7 +28,6 @@ class Walker {
 
     // is composite
     const childWalk = ([key, subObj]) => {
-      console.log(key, subObj);
       return [key, this.schema[key].walk(subObj)];
     };
     return compose(this.fn, fromPairs, map(childWalk.bind(this)), toPairs)(obj);
